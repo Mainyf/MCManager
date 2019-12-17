@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %contextName [%thread] %-5level %logger{36} - %msg%n</pattern>
+<!--            <charset>utf-8</charset>-->
+        </encoder>
+    </appender>
+    <appender name="SERVER_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>app.log</File>
+        <rollingPolicy name="file" class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>logs/app.%d{yyyy-MM-dd}%i.log.gz</fileNamePattern>
+            <maxFileSize>50MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>3GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %contextName [%thread] %-5level %logger{36} - %msg%n</pattern>
+<!--            <charset>utf-8</charset>-->
+        </encoder>
+    </appender>
+    <springProfile name="dev">
+        <logger name="io.github.mainyf.mc_manager" level="DEBUG" />
+        <root level="INFO">
+            <appender-ref ref="STDOUT"/>
+        </root>
+    </springProfile>
+    <springProfile name="prod">
+        <logger name="io.github.mainyf.mc_manager" level="DEBUG" />
+        <root level="INFO">
+            <appender-ref ref="STDOUT"/>
+            <appender-ref ref="SERVER_LOG"/>
+        </root>
+    </springProfile>
+</configuration>

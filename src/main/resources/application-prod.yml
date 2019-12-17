@@ -1,0 +1,16 @@
+server:
+  port: 8080
+spring:
+  devtools:
+    add-properties: false
+# jwt configure
+audience:
+  clientId: "gb9x83Aml60aiqLPG51Ys2MX6uZMfHaR"
+  base64SecretKey: "HWEipcUpkU9Jos1Qkw5n0ypggRZmP4yOc5M6csBkd6ynFGd4g1u6VrkaMQ83gOMQ="
+  name: "restapiuser"
+  # expires time
+  expiresTime: 3047424000
+user:
+  root:
+    username: root
+    password: "8s1LFqCdupZtx0HbDbi6u0fcwixS8kIg"
