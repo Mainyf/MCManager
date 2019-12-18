@@ -1,13 +1,26 @@
 package io.github.mainyf.mc_manager.entitys
 
 import io.github.mainyf.common_lib.exts.asUUIDFromByte
+import io.github.mainyf.mc_manager.userServiceLazy
 import java.util.*
 
+interface IUser {
+    val username: String
+    val password: String
+
+    fun isEmpty() = username.isBlank() || password.isBlank()
+
+    fun toUser() = userServiceLazy.value.getUser(username)
+
+    fun isExists() = toUser() != null
+
+}
+
 open class User(
-    var username: String = "",
-    var password: String = "",
+    override var username: String = "",
+    override var password: String = "",
     var role: MutableList<UserRole> = mutableListOf(UserRole.USER)
-) {
+) : IUser {
 
     companion object {
         val EMPTY_UUID = "EMPTY_UUID".asUUIDFromByte()
@@ -23,7 +36,7 @@ open class User(
 
     fun equalsUserPass(user: User) = this.username == user.username && this.password == user.password
 
-    fun isEmpty() = uniqueId == EMPTY_UUID
+    override fun isEmpty() = uniqueId == EMPTY_UUID
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

@@ -4,11 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import io.github.mainyf.common_lib.exts.toJson
-import io.github.mainyf.mc_manager.ErrorCause
 import io.github.mainyf.mc_manager.config.DefaultAdminUser
 import io.github.mainyf.mc_manager.entitys.User
 import io.github.mainyf.mc_manager.internal.logger
-import io.github.mainyf.mc_manager.toEx
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
@@ -34,33 +32,35 @@ class UserService {
     init {
         if (userFile.exists()) {
             mapper.readValue<List<User>>(userFile.readText()).forEach { userMap[it.uniqueId] = it }
-        } else {
-            userFile.createNewFile()
         }
     }
 
     fun addUser(user: User, hasForce: Boolean = false) {
-        if (!hasForce && user.isEmpty() || userMap.containsKey(user.uniqueId)) throw ErrorCause.ARGUMENT_ERROR.toEx()
+        if (!hasForce && user.isEmpty() || userMap.containsKey(user.uniqueId)) return
         userMap[user.uniqueId] = user
         saveToFile()
     }
 
     fun delUser(user: User) {
-        if (user.isEmpty() || !userMap.containsKey(user.uniqueId)) throw ErrorCause.ARGUMENT_ERROR.toEx()
+        if (user.isEmpty() || !userMap.containsKey(user.uniqueId)) return
         userMap.remove(user.uniqueId)
         saveToFile()
     }
 
     fun delUser(uniqueId: UUID) {
-        if (!userMap.containsKey(uniqueId)) throw ErrorCause.ARGUMENT_ERROR.toEx()
+        if (!userMap.containsKey(uniqueId)) return
         userMap.remove(uniqueId)
         saveToFile()
     }
 
-    fun getUser(uniqueId: UUID): User {
+    fun getUser(uniqueId: UUID): User? {
         if (uniqueId == adminUser.uniqueId) return adminUser
-        if (!userMap.containsKey(uniqueId)) throw ErrorCause.ARGUMENT_ERROR.toEx()
-        return userMap[uniqueId]!!
+        return userMap[uniqueId]
+    }
+
+    fun getUser(username: String): User? {
+        if (username == adminUser.username) return adminUser
+        return userMap.values.find { it.username == username }
     }
 
     @Scheduled(fixedRate = 50000, initialDelay = 50000)

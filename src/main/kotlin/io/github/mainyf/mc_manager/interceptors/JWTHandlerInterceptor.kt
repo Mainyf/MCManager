@@ -37,12 +37,14 @@ class JWTHandlerInterceptor : HandlerInterceptor {
             return true
         }
 
-        val authHeader = request.getHeader(JwtHelper.AUTH_HEADER_KEY)
+        val authHeader = request.getHeader(JwtHelper.AUTH_HEADER_KEY) ?: return true
         if (!authHeader.startsWith(JwtHelper.TOKEN_PREFIX)) {
             LOG.info("### 用户未登录, 请先登录 ###")
             throw CustomException(ErrorCause.NOT_LOGGED_IN, "用户未登录, 请先登录")
         }
         val token = authHeader.substring(JwtHelper.TOKEN_PREFIX.length)
+
+        // validate token
         JwtHelper.parseJWT(token, audience.base64SecretKey)
         return true
     }

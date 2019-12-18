@@ -37,8 +37,11 @@ dependencies {
     implementation("io.github.mainyf:common_lib:0.1")
     implementation("commons-io:commons-io:2.6")
     implementation("commons-codec:commons-codec:1.10")
+    implementation("commons-beanutils:commons-beanutils:1.9.3")
+    implementation("com.esotericsoftware:reflectasm:1.11.9")
     implementation("io.jsonwebtoken:jjwt-api:0.10.7")
     implementation("io.jsonwebtoken:jjwt-impl:0.10.7")
+    implementation("io.jsonwebtoken:jjwt-jackson:0.10.7")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")

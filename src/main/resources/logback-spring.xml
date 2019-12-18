@@ -20,13 +20,11 @@
         </encoder>
     </appender>
     <springProfile name="dev">
-        <logger name="io.github.mainyf.mc_manager" level="DEBUG" />
         <root level="INFO">
             <appender-ref ref="STDOUT"/>
         </root>
     </springProfile>
     <springProfile name="prod">
-        <logger name="io.github.mainyf.mc_manager" level="DEBUG" />
         <root level="INFO">
             <appender-ref ref="STDOUT"/>
             <appender-ref ref="SERVER_LOG"/>
