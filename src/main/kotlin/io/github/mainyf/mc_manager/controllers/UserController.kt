@@ -7,7 +7,7 @@ import io.github.mainyf.mc_manager.services.UserService
 import io.github.mainyf.mc_manager.toMap
 import io.github.mainyf.mc_manager.utils.getUserByToken
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import javax.servlet.http.HttpServletRequest
@@ -29,7 +29,7 @@ class UserController {
     @Autowired
     private lateinit var request: HttpServletRequest
 
-    @PostMapping
+    @GetMapping
     fun currentUser() = runHttp {
         request.getUserByToken()?.toMap("password", "EMPTY_UUID")
     }
